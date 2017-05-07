@@ -24,15 +24,15 @@ public class Applet extends PApplet {
         surface.setResizable(true);    // Allows for resizing (and user to set size)
         // Test data start
         RatingLoader testRatingLoader = new RatingLoader(this);    // Create loader
-        RatingSet testRatingSet = testRatingLoader.load("/Users/davidnevins/Documents/Processing/Final Project/Final-Project-CS-105/FakeNews_to_Ratings/Data/approval.csv");    // Load rating data and create set
+        RatingSet testRatingSet = testRatingLoader.load("data/approval.csv");    // Load rating data and create set
         RatingPlotter testRatingPlotter = new RatingPlotter(this, testRatingSet);
 
         TrendLoader testTrendLoader = new TrendLoader(this);
-        TrendSet testTrendSet = testTrendLoader.load("/Users/davidnevins/Documents/Processing/Final Project/Final-Project-CS-105/FakeNews_to_Ratings/Data/FakeNews.csv");
+        TrendSet testTrendSet = testTrendLoader.load("data/FakeNews.csv");
         TrendPlotter testTrendPlotter = new TrendPlotter(this, testTrendSet);
 
         TweetLoader testTweetLoader = new TweetLoader(this);
-        TweetSet testTweetSet = testTweetLoader.load("/Users/davidnevins/Documents/Processing/Final Project/Final-Project-CS-105/FakeNews_to_Ratings/Data/condensed_2017.json");
+        TweetSet testTweetSet = testTweetLoader.load("data/condensed_2017.json");
         TweetPlotter testTweetPlotter = new TweetPlotter(this, testTweetSet);
 
         Plotter[] plotters = {testRatingPlotter, testTrendPlotter, testTweetPlotter};
