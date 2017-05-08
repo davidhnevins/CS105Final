@@ -34,8 +34,11 @@ class RatingPlotter extends Plotter {
         float lastX = 0;
         float lastY = 0;
 
+        int lineStroke = 2;
+        int pointStroke = 5;
+
         Rating testPoint = (Rating) ((RatingSet) set).getApprovals()[((RatingSet) set).getApprovals().length - 1];    // Last point in getApprovals
-        float testX = 32 + startX + (widthPerDay * ChronoUnit.DAYS.between(startDate, testPoint.getDate()));
+        float testX = startX + (widthPerDay * ChronoUnit.DAYS.between(startDate, testPoint.getDate()));
         long testDays = ChronoUnit.DAYS.between(startDate, testPoint.getDate());
         float testY = endY - ((float) ((testPoint.getValue() / 100.0) * ySpan));
         p.strokeWeight(3);
@@ -43,18 +46,20 @@ class RatingPlotter extends Plotter {
         p.point(testX, endY);
 
         DataPoint[] points = ((RatingSet) set).getApprovals();       // Cast RatingSet to getApprovals
+
         for (int i = 0; i < points.length; i++) {
             Rating rating = (Rating) points[i];      // Need to
             if (rating.getDate().isBefore(startDate) || rating.getDate().isAfter(endDate)) {        // Checks if date is in range
                 continue;
             }       // Otherwise plot
-            float x = 32 + startX + (widthPerDay * ChronoUnit.DAYS.between(startDate, rating.getDate()));        // X-position
+            float x = startX + (widthPerDay * ChronoUnit.DAYS.between(startDate, rating.getDate()));        // X-position
             float y = endY - ((float) ((rating.getValue() / 100.0) * ySpan));      // Y-position
-            p.strokeWeight(3);
-            p.point(x, y);
+            p.strokeWeight(lineStroke);
             if (lastX != 0 && lastY != 0) {     // Only plot line when there is a previous point
                 p.line(lastX, lastY, x, y);
             }
+            p.strokeWeight(pointStroke);
+            p.point(x, y);
             lastX = x;
             lastY = y;
         }
@@ -70,60 +75,17 @@ class RatingPlotter extends Plotter {
             if (disapprovalRating.getDate().isBefore(startDate) || disapprovalRating.getDate().isAfter(endDate)) {        // Checks if date is in range
                 continue;
             }       // Otherwise plot
-            float x = 32 + startX + (widthPerDay * ChronoUnit.DAYS.between(startDate, disapprovalRating.getDate()));        // X-position
+            float x = startX + (widthPerDay * ChronoUnit.DAYS.between(startDate, disapprovalRating.getDate()));        // X-position
             float y = endY - ((float) ((disapprovalRating.getValue() / 100.0) * ySpan));      // Y-position
-            p.strokeWeight(3);
-            p.point(x, y);
+            p.strokeWeight(lineStroke);
             if (lastXDisapproval != 0 && lastYDisapproval != 0) {     // Only plot line when there is a previous point
                 p.line(lastXDisapproval, lastYDisapproval, x, y);
             }
+            // Draw point for each DataPoint
+            p.strokeWeight(pointStroke);
+            p.point(x, y);
             lastXDisapproval = x;
             lastYDisapproval = y;
         }
-
-
-        /*      OLD CODE BELOW
-        RatingSet set = (RatingSet)this.set;
-        int padding = 30;       // Space between start of axes and
-        DataPoint[] ratingSet = set.getDataPoints();
-        int yAxisLength = p.height - padding;
-        float distanceBetweenXTicks = yAxisLength / 20;
-        int numOfDataPoints = set.getDataPoints().length - 1;       // Includes approvals AND disapprovals. '-1' to acct. for index 0
-        float lastYCoordinateApproval = (float) (yAxisLength - ((((Rating)ratingSet[numOfDataPoints / 2]).getValue() / 100.0) * yAxisLength));      // Initial y-coord.
-
-        // Finding location for x-position to begin
-        LocalDate startDate = ratingSet[numOfDataPoints].getDate();     // Stories date of 1st rating
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d");    // Format for date
-        long timeFrame = ChronoUnit.DAYS.between(graphStartDate, startDate);
-        float lastXCoordinateApproval = padding + distanceBetweenXTicks;        // Initial x-coord.
-
-        for (int i = (numOfDataPoints / 2); i >= 0; i--) {      // ** Test loop!! **
-            float yCoordinateApproval = (float) (yAxisLength - ((ratingSet[i].getValue() / 100.0) * yAxisLength));
-            float xCoordinateApproval = (padding + distanceBetweenXTicks) + (distanceBetweenXTicks * (numOfDataPoints / 2 - i));
-            p.stroke(0, 129, 255);
-            p.strokeWeight(2);
-            ap.line(lastXCoordinateApproval, lastYCoordinateApproval, xCoordinateApproval, yCoordinateApproval);
-            p.strokeWeight(5);
-            p.point(xCoordinateApproval, yCoordinateApproval);
-            lastXCoordinateApproval = xCoordinateApproval;
-            lastYCoordinateApproval = yCoordinateApproval;
-        }
-        // End plotting approval line
-
-        // Start plotting disapproval line
-        float lastYCoordinateDisapproval = (float) (yAxisLength - ((ratingSet[numOfDataPoints].getValue() / 100.0) * yAxisLength));
-        float lastXCoordinateDisapproval = padding + distanceBetweenXTicks;
-        for (int i = numOfDataPoints; i >= numOfDataPoints / 2; i--) {
-            float yCoordinateDisapproval = (float) (yAxisLength - ((ratingSet[i].getValue() / 100.0) * yAxisLength));
-            float xCoordinateDisapproval = (padding + distanceBetweenXTicks) + (distanceBetweenXTicks * (numOfDataPoints - i));
-            p.stroke(255, 76, 59);
-            p.strokeWeight(2);
-            p.line(lastXCoordinateDisapproval, lastYCoordinateDisapproval, xCoordinateDisapproval, yCoordinateDisapproval);
-            p.strokeWeight(5);
-            p.point(xCoordinateDisapproval, yCoordinateDisapproval);
-            lastXCoordinateDisapproval= xCoordinateDisapproval;
-            lastYCoordinateDisapproval= yCoordinateDisapproval;
-        }
-        */
     }
 }

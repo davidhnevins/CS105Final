@@ -64,12 +64,10 @@ class Graph {
         long numberOfDays = ChronoUnit.DAYS.between(startDate, endDate);
 
         int numberOfXTicks = 20;
-        int numberOfDaysPerTick = (int) (numberOfDays / numberOfXTicks);     // 108 / 20 = 5
-        int widthPerDay = (int) (width / numberOfDays);        // 440 / 108 = 4
-        float usableWidth = widthPerDay * numberOfDays;  // 4 * 108 = 432
-        width = (int) usableWidth;
-        endX = startX + width;
-        double xIncrement = (double) width / numberOfXTicks;
+        int numberOfDaysPerTick = (int) Math.ceil((float) numberOfDays / numberOfXTicks);     // 108 / 20 = 6
+        int numberOfDaysRepresented = numberOfDaysPerTick * numberOfXTicks; // 6 * 20 = 120
+        float widthPerDay = (float) width / numberOfDaysRepresented;        // 440 / 120 = 3.6666 | have to divide by number of days on x-axis
+        float xIncrement = (float) width / numberOfXTicks;
         for (int i = 0; i <= numberOfXTicks; i++) {
             float y = endY;
             float x = startX + (float) (i * xIncrement);
