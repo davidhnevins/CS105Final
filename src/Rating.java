@@ -23,7 +23,7 @@ class Rating implements DataPoint {    // 'Implements' DataPoint instead of exte
         return type;
     }
 
-    public float getValue() {
+    public int getValue() {
         return value;
     }
 

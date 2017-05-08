@@ -6,22 +6,16 @@ Final Project - Comparing data
 
 import processing.core.PApplet;
 
+import javax.swing.*;
+
 public class Applet extends PApplet {
 
-    public static void main(String... args) {
-        PApplet.main("Applet");
-    }
-
-    int width = 500;
-    int height = 500;
 
     public void settings() {
         size(500, 500);
     }
 
-
-    public void setup() {
-        surface.setResizable(true);    // Allows for resizing (and user to set size)
+    public void draw() {
         // Test data start
         RatingLoader testRatingLoader = new RatingLoader(this);    // Create loader
         RatingSet testRatingSet = testRatingLoader.load("data/approval.csv");    // Load rating data and create set
@@ -36,10 +30,17 @@ public class Applet extends PApplet {
         TweetPlotter testTweetPlotter = new TweetPlotter(this, testTweetSet);
 
         Plotter[] plotters = {testRatingPlotter, testTrendPlotter, testTweetPlotter};
-        Graph testGraph = new Graph(this, plotters, 500, 500);    // 500, 500 is the width and height
+        Graph testGraph = new Graph(this, plotters);        // 'this' allows to draw on canvas
 
         testGraph.plot();
         // Test data end
+
+        JFrame frame = new JFrame("MyForm");
+        frame.setContentPane(new UserSettingsForm(testGraph).getMainPanel());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        noLoop();
     }
 
 /*

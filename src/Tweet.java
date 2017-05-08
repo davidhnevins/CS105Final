@@ -20,6 +20,16 @@ class Tweet implements DataPoint {
         return text;
     }
 
+    // Get type of data
+    public String getType() {
+        return "Tweet";
+    }
+
+    // Here because I don't know how to write methods that dont have to be in all classes that implement interface
+    public int getValue() {
+        return 0;
+    }
+
     // Supports printing of the class to allow for testing
     public String toString() {
         String tweet = date + "\n" + text;
